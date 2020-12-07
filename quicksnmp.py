@@ -44,7 +44,8 @@ def get_bulk(target, oids, credentials, count, start_from=0, port=161,
         credentials,
         hlapi.UdpTransportTarget((target, port)),
         context,
-        start_from, count,
+        start_from, 
+        count,
         *construct_object_types(oids)
     )
     return fetch(handler, count)
