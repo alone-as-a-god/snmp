@@ -1,19 +1,13 @@
 from pysnmp import hlapi
-
+from pysnmp.entity import engine, config
+from pysnmp.carrier.asyncore.dgram import udp
+from pysnmp.entity.rfc3413 import ntfrcv
 
 def construct_object_types(list_of_oids):
     object_types = []
     for oid in list_of_oids:
         object_types.append(hlapi.ObjectType(hlapi.ObjectIdentity(oid)))
     return object_types
-
-
-def construct_value_pairs(list_of_pairs):
-    pairs = []
-    for key, value in list_of_pairs.items():
-        pairs.append(hlapi.ObjectType(hlapi.ObjectIdentity(key), value))
-    return pairs
-
 
 def get(target, oids, credentials, port=161, engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
     handler = hlapi.getCmd(
@@ -24,38 +18,6 @@ def get(target, oids, credentials, port=161, engine=hlapi.SnmpEngine(), context=
         *construct_object_types(oids)
     )
     return fetch(handler, 1)[0]
-
-
-def set(target, value_pairs, credentials, port=161, engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
-    handler = hlapi.setCmd(
-        engine,
-        credentials,
-        hlapi.UdpTransportTarget((target, port)),
-        context,
-        *construct_value_pairs(value_pairs)
-    )
-    return fetch(handler, 1)[0]
-
-
-def get_bulk(target, oids, credentials, count, start_from=0, port=161,
-             engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
-    handler = hlapi.bulkCmd(
-        engine,
-        credentials,
-        hlapi.UdpTransportTarget((target, port)),
-        context,
-        start_from, 
-        count,
-        *construct_object_types(oids)
-    )
-    return fetch(handler, count)
-
-
-def get_bulk_auto(target, oids, credentials, count_oid, start_from=0, port=161,
-                  engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
-    count = get(target, [count_oid], credentials, port, engine, context)[count_oid]
-    return get_bulk(target, oids, credentials, count, start_from, port, engine, context)
-
 
 def cast(value):
     try:
@@ -87,4 +49,6 @@ def fetch(handler, count):
             break
     return result
 
+
+    
 
