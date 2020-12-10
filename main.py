@@ -7,6 +7,8 @@ from pysnmp.entity.rfc3413 import ntfrcv
 import keyboard
 import os
 import time
+from time import sleep
+from threading import Thread
 
 menuLogo = ".-./`)    .-'''-. .---.  .---..-./`) .-------.    .-'''-.            .-'''-. ,---.   .--.,---.    ,---..-------.  \n\\ .-.')  / _     \\|   |  |_ _|\\ .-.')\\  _(`)_ \\  / _     \\          / _     \\|    \\  |  ||    \\  /    |\\  _(`)_ \\ \n/ `-' \\ (`' )/`--'|   |  ( ' )/ `-' \\| (_ o._)| (`' )/`--'         (`' )/`--'|  ,  \\ |  ||  ,  \\/  ,  || (_ o._)| \n `-'`\"`(_ o _).   |   '-(_{;}_)`-'`\"`|  (_,_) /(_ o _).           (_ o _).   |  |\\_ \\|  ||  |\\_   /|  ||  (_,_) / \n .---.  (_,_). '. |      (_,_) .---. |   '-.-'  (_,_). '.          (_,_). '. |  _( )_\\  ||  _( )_/ |  ||   '-.-'  \n |   | .---.  \\  :| _ _--.   | |   | |   |     .---.  \\  :        .---.  \\  :| (_ o _)  || (_ o _) |  ||   |      \n |   | \\    `-'  ||( ' ) |   | |   | |   |     \\    `-'  |        \\    `-'  ||  (_,_)\\  ||  (_,_)  |  ||   |      \n |   |  \\       / (_{;}_)|   | |   | /   )      \\       /          \\       / |  |    |  ||  |      |  |/   )      \n '---'   `-...-'  '(_,_) '---' '---' `---'       `-...-'            `-...-'  '--'    '--''--'      '--'`---'      "
 
@@ -53,7 +55,7 @@ def receiveTraps():                                         #todo: function does
 
 while True:
     cls()
-    print(menuLogo+"\n\n")
+    print('\033[96m'+menuLogo+"\n\n\033[0m")
 
     cmd = input("Enter a command: ")
     if(cmd=="/help"):
@@ -82,19 +84,24 @@ while True:
             break
 
         commName = input("Enter a Community Name: ")
-        print(quicksnmp.get(ipaddress, ['1.3.6.1.2.1.1.5.0','1.3.6.1.2.1.1.4.0','1.3.6.1.2.1.1.3.0','1.3.6.1.2.1.1.1.0','.1.3.6.1.2.1.1.6.0'], hlapi.CommunityData(commName)))
-
-    elif(cmd=="/set"):
+        oids = ['1.3.6.1.2.1.1.5.0','1.3.6.1.2.1.1.4.0','1.3.6.1.2.1.1.3.0','1.3.6.1.2.1.1.1.0','.1.3.6.1.2.1.1.6.0']
+        for oid in oids:
+            quicksnmp.get(ipaddress, oid, commName)
+        
+        sleep(30)
+    elif(cmd=="/scan"):
+        network = str(input("Please enter a network and its subnet mask (e.g. 192.168.1.0/24): "))
+        print("Please wait, this could take a while...\n\n")
+        
+        thread = Thread(target=quicksnmp.iterateIP, args = (network,))
+        thread.start()
+        thread.join()
+        print("\n\nFinished scanning, press ENTER to return to main Menu")
         while True:
-            ipaddress = input("Enter an IP-Adress: ")
-
-            if(ipaddress!="localhost"):
-                try:
-                    socket.inet_aton(ipaddress)
-                except socket.error:
-                    print("Please enter a valid IP-Adress")
-            break
-
-        commName = input("Enter a Community Name: ")
-        print(quicksnmp.get(ipaddress, ['1.3.6.1.2.1.1.5.0','1.3.6.1.2.1.1.4.0','1.3.6.1.2.1.1.3.0','1.3.6.1.2.1.1.1.0','.1.3.6.1.2.1.1.6.0'], hlapi.CommunityData(commName)))
+            if(keyboard.is_pressed("enter")):
+                
+                cls()
+                break
+        
+       
 
