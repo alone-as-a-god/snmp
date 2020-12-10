@@ -1,10 +1,13 @@
 from pysnmp.hlapi import *
 import ipaddress
+import os
 from threading import Thread
 from pysnmp.entity import engine, config
 from pysnmp.carrier.asyncore.dgram import udp
 from pysnmp.entity.rfc3413 import ntfrcv
 
+def cls():                                              #checks if os is linux or windows, creates a corresponding clear command
+    os.system('cls' if os.name=='nt' else 'clear')
 
 def get(target, oid, credentials, threaded=False):          #Default getter function. threaded is used to indentify if called by thread or not
     iterator = getCmd(
