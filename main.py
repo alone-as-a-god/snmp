@@ -18,7 +18,7 @@ if __name__ == "__main__":
     while True:
         ishipsnmp.cls()
         print('\033[96m'+menuLogo+"\n\n\033[0m")
-
+    
         cmd = input("Enter a command: ")
         if(cmd=="/help"):
             print("Welcome to iShips SNMP™")
@@ -27,11 +27,7 @@ if __name__ == "__main__":
             print("/get - Gives you the option to input IP, Port and CommunityData to read out information via SNMP")
             print("/receive - Starts a SNMP Trap Listener which checks and reads incoming Traps. Be aware that after executing this command, you cannot go back unless you close this program and restart it again")
             print("If you are finished with reading this, please press ENTER to return to the main menu")
-            while True:
-                if(keyboard.is_pressed("enter")):
-                    
-                    ishipsnmp.cls()
-                    break
+            input("\n\nPress ENTER to continue")
         elif(cmd=="/receive"):
             ishipsnmp.receiveTraps()
         elif(cmd=="/get"):
@@ -50,11 +46,7 @@ if __name__ == "__main__":
             for oid in oids:
                 ishipsnmp.get(ipaddress, oid, commName)
             
-            while True:
-                if(keyboard.is_pressed("enter")):
-                    
-                    ishipsnmp.cls()
-                    break
+            input("\n\nPress ENTER to continue")
         elif(cmd=="/scan"):
             network = str(input("Please enter a network and its subnet mask (e.g. 192.168.1.0/24): "))
             print("Please wait, this could take a while...\n\n")
@@ -62,12 +54,7 @@ if __name__ == "__main__":
             thread = Thread(target=ishipsnmp.iterateIP, args = (network,))
             thread.start()
             thread.join()
-            print("\n\nFinished scanning, press ENTER to return to main Menu")
-            while True:
-                if(keyboard.is_pressed("enter")):
-                    
-                    ishipsnmp.cls()
-                    break
+            input("\n\nFinished scanning, press ENTER to return to main Menu")
             
         
 
