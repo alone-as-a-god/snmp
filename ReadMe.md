@@ -20,6 +20,8 @@ If you're using Windows, SmartScreen could come up and warn you about insecure s
 You can also just download the source code, and run main.py, to make this work you obviously have to have Python installed (recommended ver. 3.8+)
 After that, open a terminal, and run "pip install pysnmp" and "pip install keyboard"
 
+To begin, type ```/help```
+
 ### Todos
 
  - Make scan
