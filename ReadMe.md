@@ -18,7 +18,7 @@ No need to install anything, just download the latest release, unzip it, and sta
 If you're using Windows, SmartScreen could come up and warn you about insecure software, just ignore it (or scan it with a Virus Scanner to be sure it's safe).
 
 You can also just download the source code, and run main.py, to make this work you obviously have to have Python installed (recommended ver. 3.8+)
-After that, open a terminal, and run "pip install pysnmp" and "pip install keyboard"
+After that, open a terminal, and run ```pip install pysnmp``` and ```pip install keyboard```
 
 To begin, type ```/help```
 
