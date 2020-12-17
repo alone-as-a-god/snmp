@@ -25,11 +25,12 @@ To begin, type ```/help```
 
 ### Todos
 
- - Make scan
  - Scan IP via mib file
- - Make it possible to interrupt "Receive Trap" function, without program crashing
- - Fix issues (see issues page)
-
+ 
+ 
+### Next Steps:
+ - Scan IP via mib file
+ 
 ### Screenshots
 ![Main Menu](https://i.imgur.com/5mwpa2N.png)
 ![/help](https://i.imgur.com/3M1Fgtu.png)
