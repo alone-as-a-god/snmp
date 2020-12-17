@@ -34,5 +34,5 @@ To begin, type ```/help```
 ![Main Menu](https://i.imgur.com/5mwpa2N.png)
 ![/help](https://i.imgur.com/3M1Fgtu.png)
 ![/get](https://i.imgur.com/XRfvCEq.png)
-![/scan](https://i.imgur.com/U0wCcs2.png)
+![/scan](https://i.imgur.com/U0wCcs2.png)<br>
 ![/receive](https://i.imgur.com/Zmw6zKu.png)
