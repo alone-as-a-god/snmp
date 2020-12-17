@@ -41,31 +41,34 @@ def iterateIP(network):                #goes through all ip's in network to chec
     if thread != Null:                                                              #Makes sure last thread is finished
         thread.join()  
         
-def receiveTraps():                                                                 #checks for incoming traps
-    snmpEngine = SnmpEngine()
-    TrapAgentAddress='localhost'; 
-    Port=162;                                              
-
-    print("Now listening for Trap on "+TrapAgentAddress+":"+str(Port)+"...\n");
-    config.addTransport(
-        snmpEngine,
-        udp.domainName + (1,),
-        udp.UdpTransport().openServerMode((TrapAgentAddress, Port))
-    )
-
-    config.addV1System(snmpEngine, 'community', 'public')
-
-    def trapOutput(snmpEngine, stateReference, contextEngineId, contextName, varBinds, cbCtx):
-        print("Received new Trap message");
-        for name, val in varBinds:                                              #iterates through each received oid pair
-            print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))          #pretty Print to make it readable
-        return
-
-    ntfrcv.NotificationReceiver(snmpEngine, trapOutput)
-
-    snmpEngine.transportDispatcher.jobStarted(1)  
+def receiveTraps():                                                                #checks for incoming traps
     try:
-        snmpEngine.transportDispatcher.runDispatcher()
-    except:
-        snmpEngine.transportDispatcher.closeDispatcher()
-        raise
+        snmpEngine = SnmpEngine()
+        TrapAgentAddress='localhost'; 
+        Port=162;                                              
+
+        print("Now listening for Trap on "+TrapAgentAddress+":"+str(Port)+"...\n");
+        config.addTransport(
+            snmpEngine,
+            udp.domainName + (1,),
+            udp.UdpTransport().openServerMode((TrapAgentAddress, Port))
+        )
+
+        config.addV1System(snmpEngine, 'community', 'public')
+
+        def trapOutput(snmpEngine, stateReference, contextEngineId, contextName, varBinds, cbCtx):
+            print("Received new Trap message");
+            for name, val in varBinds:                                              #iterates through each received oid pair
+                print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))          #pretty Print to make it readable
+            return
+
+        ntfrcv.NotificationReceiver(snmpEngine, trapOutput)
+
+        snmpEngine.transportDispatcher.jobStarted(1)  
+        try:
+            snmpEngine.transportDispatcher.runDispatcher()
+        except:
+            snmpEngine.transportDispatcher.closeDispatcher()
+            raise
+    except KeyboardInterrupt:
+        return
