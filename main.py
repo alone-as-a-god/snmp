@@ -3,16 +3,7 @@ import socket
 import keyboard
 from threading import Thread
 
-
-
-
-
-
-
-
 menuLogo = ".-./`)    .-'''-. .---.  .---..-./`) .-------.    .-'''-.            .-'''-. ,---.   .--.,---.    ,---..-------.  \n\\ .-.')  / _     \\|   |  |_ _|\\ .-.')\\  _(`)_ \\  / _     \\          / _     \\|    \\  |  ||    \\  /    |\\  _(`)_ \\ \n/ `-' \\ (`' )/`--'|   |  ( ' )/ `-' \\| (_ o._)| (`' )/`--'         (`' )/`--'|  ,  \\ |  ||  ,  \\/  ,  || (_ o._)| \n `-'`\"`(_ o _).   |   '-(_{;}_)`-'`\"`|  (_,_) /(_ o _).           (_ o _).   |  |\\_ \\|  ||  |\\_   /|  ||  (_,_) / \n .---.  (_,_). '. |      (_,_) .---. |   '-.-'  (_,_). '.          (_,_). '. |  _( )_\\  ||  _( )_/ |  ||   '-.-'  \n |   | .---.  \\  :| _ _--.   | |   | |   |     .---.  \\  :        .---.  \\  :| (_ o _)  || (_ o _) |  ||   |      \n |   | \\    `-'  ||( ' ) |   | |   | |   |     \\    `-'  |        \\    `-'  ||  (_,_)\\  ||  (_,_)  |  ||   |      \n |   |  \\       / (_{;}_)|   | |   | /   )      \\       /          \\       / |  |    |  ||  |      |  |/   )      \n '---'   `-...-'  '(_,_) '---' '---' `---'       `-...-'            `-...-'  '--'    '--''--'      '--'`---'      "
-
-
 
 if __name__ == "__main__":
     while True:
@@ -25,7 +16,7 @@ if __name__ == "__main__":
             print("Your current version supports the following commands:")
             print("/help - Displays the current message")
             print("/get - Gives you the option to input IP, Port and CommunityData to read out information via SNMP")
-            print("/receive - Starts a SNMP Trap Listener which checks and reads incoming Traps. Be aware that after executing this command, you cannot go back unless you close this program and restart it again")
+            print("/receive - Starts a SNMP Trap Listener which checks and reads incoming Traps. You can interrupt this by pressing CTRL+C once")
             print("If you are finished with reading this, please press ENTER to return to the main menu")
             input("\n\nPress ENTER to continue")
         elif(cmd=="/receive"):
@@ -42,6 +33,8 @@ if __name__ == "__main__":
                 break
 
             commName = input("Enter a Community Name: ")
+            if commName == "":
+                commName = "public"
             oids = ['1.3.6.1.2.1.1.5.0','1.3.6.1.2.1.1.4.0','1.3.6.1.2.1.1.3.0','1.3.6.1.2.1.1.1.0','.1.3.6.1.2.1.1.6.0']
             for oid in oids:
                 ishipsnmp.get(ipaddress, oid, commName)
